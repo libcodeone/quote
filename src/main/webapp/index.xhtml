@@ -1,0 +1,144 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Quote Free</title>
+        <h:outputStylesheet library="webjars" name="primeflex/3.3.1/primeflex.min.css" />
+    </h:head>
+    <h:body>
+
+        <p:card style="margin: 5% 5% 5% 5%">
+            <f:facet name="title">
+                Create Quotes free Here!!!!
+            </f:facet>
+            <h:form  id="quoteForm" >
+
+                <div class="card">
+
+                    <h3>Client Data:</h3>
+                    <div class="ui-fluid formgrid grid">
+                        <div class="field col-12 md:col-6">
+                            <p:outputLabel for="clientName" value="Client Name"/>
+                            <p:inputText id="clientName" value="#{quoteController.quote.clientName}" />
+                        </div>
+                        <div class="field col-12 md:col-3">
+                            <p:outputLabel for="clientId" value="Client ID"/>
+                            <p:inputText id="clientId" value="#{quoteController.quote.clientId}"  />
+                        </div>
+                        <!--            <div class="field col-12">
+                                        <p:outputLabel for="address" value="Address"/>
+                                        <p:inputTextarea id="address" rows="4"/>
+                                    </div>-->
+                        <div class="field col-12 md:col-6">
+                            <p:outputLabel for="email" value="Email"/>
+                            <p:inputText id="email" value="#{quoteController.quote.email}"  >
+
+
+                            </p:inputText>
+                        </div>
+                        <!--            <div class="field col-12 md:col-3">
+                                        <p:outputLabel for="state" value="State"/>
+                                        <p:selectOneMenu id="state">
+                                            <f:selectItem itemLabel="Select One" itemValue="#{null}" noSelectionOption="true"/>
+                                            <f:selectItem itemLabel="Option 1" itemValue="Option 1"/>
+                                            <f:selectItem itemLabel="Option 2" itemValue="Option 2"/>
+                                            <f:selectItem itemLabel="Option 3" itemValue="Option 3"/>
+                                        </p:selectOneMenu>
+                                    </div>-->
+                        <div class="field col-12 md:col-3">
+                            <p:outputLabel for="phone" value="Phone"/>
+                            <p:inputMask id="phone"  mask="9999-9999" value="#{quoteController.quote.phone}"  validateMask="true" />
+                        </div>
+                    </div>
+                   
+                </div>
+                <hr></hr>
+                  <h3>Quote Details:</h3>
+                <div class="formgroup-inline">
+                    <div class="field ">
+                        <p:outputLabel for="productName"  value="Product"/>
+                        <p:inputText id="productName" value="#{quoteController.detail.productName}" placeholder="name"/>
+                    </div>
+                    <div class="field">
+                        <p:outputLabel for="price"  value="Price"/>
+                        <p:inputNumber id="price" value="#{quoteController.detail.price}" placeholder="9.99" modifyValueOnWheel="false">
+                        
+                             <p:ajax event="keyup" update="parcialTotal" listener="#{quoteController.calculateTotalParcial}" />
+                        
+                        </p:inputNumber>
+                    </div>
+                    <div class="field">
+                        <p:outputLabel for="quantity"  value="Qty"/>
+                        <p:inputNumber id="quantity" placeholder="9999" value="#{quoteController.detail.quantity}" modifyValueOnWheel="false" >
+                        
+                         <p:ajax event="keyup" update="parcialTotal" listener="#{quoteController.calculateTotalParcial}" />
+                        
+                        </p:inputNumber>
+                    </div>
+                    <div class="field">
+                        <p:outputLabel for="parcialTotal"  value="Parcial"/>
+                        <p:inputNumber id="parcialTotal" value="#{quoteController.detail.parcialTotal}" readonly="true" modifyValueOnWheel="false" />
+                    </div>
+                    <p:commandButton icon="pi pi-plus" actionListener="#{quoteController.addDetail}" update="detailForm quoteForm" />
+                </div>
+            </h:form>
+            
+
+            <div class="card">
+
+              
+
+                <h:form id="detailForm">
+                    <p:dataTable
+                        value="#{quoteController.details}" var="detail">
+                        <p:column>
+                            <f:facet name="header">Product Name</f:facet>
+                            <span> #{detail.productName}</span>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header"> Price </f:facet>
+                            <span> #{detail.price}</span>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header"> Quantity </f:facet>
+                            <span> #{detail.quantity}</span>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header"> Parcial Total </f:facet>
+                            <span> #{detail.parcialTotal}</span>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header"> </f:facet>
+
+                            <p:spacer width="10" />
+                            <p:commandButton  icon="pi pi-trash" update="detailForm "
+                                             style="background-color: red" 
+                                             action="#{quoteController.deleteDetail(detail)}" >
+
+                            </p:commandButton>
+
+
+                        </p:column>
+
+
+                    </p:dataTable>
+                 
+                </h:form>
+
+            </div>
+
+             <p:panelGrid columns="4" layout="grid">
+                        <p:commandButton value="Guardar" actionListener="#{quoteController.saveQuote}"
+                                         update="detailForm quoteForm"     />
+                    </p:panelGrid>
+
+
+
+        </p:card>
+
+
+    </h:body>
+</html>
