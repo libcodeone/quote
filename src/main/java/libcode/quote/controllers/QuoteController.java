@@ -8,13 +8,17 @@ import jakarta.enterprise.inject.Any;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.OptionalDouble;
 import java.util.UUID;
 import libcode.quote.entities.*;
 import libcode.quote.services.DataService;
 import lombok.Data;
+import org.primefaces.convert.DateTimeConverter;
 
 /**
  *
@@ -40,8 +44,9 @@ public class QuoteController implements Serializable {
         this.details = new ArrayList<>();
 
         this.detail = new DetailQuote();
-
+       
         this.quote = new Quote();
+        quote.setDate(new Date());
     }
 
     public void saveQuote() {
@@ -72,38 +77,5 @@ public class QuoteController implements Serializable {
         details.remove(details.stream().filter(e -> e.getTempId().equals(detail.getTempId())).toList().get(0));
     }
 
-    //**Getters and Setters**//
-//    public List<DetailQuote> getDetails() {
-//        return details;
-//    }
-//
-//    public void setDetails(List<DetailQuote> details) {
-//        this.details = details;
-//    }
-//
-//    public DetailQuote getDetail() {
-//        return detail;
-//    }
-//
-//    public void setDetail(DetailQuote detail) {
-//        this.detail = detail;
-//    }
-//
-//    public Quote getQuote() {
-//        return quote;
-//    }
-//
-//    public void setQuote(Quote quote) {
-//        this.quote = quote;
-//    }
-//
-//    public DataService getServicio() {
-//        return servicio;
-//    }
-//
-//    public void setServicio(DataService servicio) {
-//        this.servicio = servicio;
-//    }
-//
-//   
+
 }

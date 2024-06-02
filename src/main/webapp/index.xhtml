@@ -3,7 +3,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      >
     <h:head>
         <title>Quote Free</title>
         <h:outputStylesheet library="webjars" name="primeflex/3.3.1/primeflex.min.css" />
@@ -14,6 +16,9 @@
             <f:facet name="title">
                 Create Quotes free Here!!!!
             </f:facet>
+            <h:outputText id="lblDate" value="#{quoteController.quote.date}">
+                <f:convertDateTime timeZone="America/El_Salvador"  pattern="dd/MM/yyyy HH:mm:ss"/>
+            </h:outputText>
             <h:form  id="quoteForm" >
 
                 <div class="card">
@@ -34,10 +39,14 @@
                                     </div>-->
                         <div class="field col-12 md:col-6">
                             <p:outputLabel for="email" value="Email"/>
-                            <p:inputText id="email" value="#{quoteController.quote.email}"  >
-
+                            <p:inputText id="email" required="true" 
+                                         validatorMessage="El correo electrónico no es válido"
+                                         value="#{quoteController.quote.email}"  >
+                                    
+                                    <f:validateRegex pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" />
 
                             </p:inputText>
+                            <h:message for="email" style="color: red" />
                         </div>
                         <!--            <div class="field col-12 md:col-3">
                                         <p:outputLabel for="state" value="State"/>
@@ -88,9 +97,6 @@
             
 
             <div class="card">
-
-              
-
                 <h:form id="detailForm">
                     <p:dataTable
                         value="#{quoteController.details}" var="detail">
@@ -108,7 +114,12 @@
                         </p:column>
                         <p:column>
                             <f:facet name="header"> Parcial Total </f:facet>
-                            <span> #{detail.parcialTotal}</span>
+                            
+                            <h:outputText value="#{detail.price*detail.quantity}">
+                                
+                                <f:convertNumber type="currency" locale="en_US" />
+                            </h:outputText>
+                            
                         </p:column>
                         <p:column>
                             <f:facet name="header"> </f:facet>
